@@ -30,6 +30,7 @@
             width: 100%;
             border-radius: 8px;
             margin-bottom: 15px;
+            cursor: pointer;
         }
 
         .radioName {
@@ -60,12 +61,11 @@
 
 <body>
     <div class="radioContainer">
-        <img src="photo.jpg" alt="Radio Image" class="radioImage">
+        <img src="photo.jpg" alt="Radio Image" class="radioImage" onclick="playRandomSong()">
         <div class="radioName" onclick="playRandomSong()">Radio Murka</div>
         <audio id="audioPlayer" controls></audio>
         <div id="songTitle" class="songTitle"></div>
-    </div>
-
+</div>
     <script>
         let musicLinks = ["https://raw.githubusercontent.com/ValeriaOtter/zerooo/main/'Cause%20You%20Are%20Young%20(Maxi-Version)%20%5B7t7cmkvaKbQ%5D.mp3",
             "https://raw.githubusercontent.com/ValeriaOtter/zerooo/main/02 Дирижабль [zWq5nKUlcOI].mp3",
