@@ -10,7 +10,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 65vh;
+            height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: rgb(2, 115, 143);
@@ -23,6 +23,8 @@
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 4px 8px;
+            height: 430px;
+
 
         }
 
@@ -33,12 +35,20 @@
             cursor: pointer;
         }
 
+
+
+        
         .radioName {
             font-size: 28px;
             margin-bottom: 15px;
             font-weight: bold;
             cursor: pointer;
+            color: rgb(2, 115, 143);
         }
+        .radioName span {
+            color: #f4b062;
+        }
+
 
         button {
             border-radius: 13px;
@@ -55,17 +65,29 @@
             font-size: 18px;
             color: rgb(2, 115, 143);
             font-weight: bold;
+            text-align: center;
+            
         }
+        .songName span {
+            visibility: hidden;
+            display: inline-block;
+            width: 10px;
+        }
+
+        
+        
     </style>
 </head>
 
 <body>
     <div class="radioContainer">
-        <img src="photo.jpg" alt="Radio Image" class="radioImage" onclick="playRandomSong()">
-        <div class="radioName" onclick="playRandomSong()">Radio Murka</div>
-        <audio id="audioPlayer" controls></audio>
+        <div class="radioName" onclick="playRandomSong()">
+            <span>R</span>adio <span>M</span>urka
+        </div>
+        <img src="photo.jpg" alt="Radio Image" class="radioImage" onclick="togglePlayPause()">
+        <audio id="audioPlayer"></audio>
         <div id="songTitle" class="songTitle"></div>
-</div>
+    </div>
     <script>
         let musicLinks = ["https://raw.githubusercontent.com/ValeriaOtter/zerooo/main/'Cause%20You%20Are%20Young%20(Maxi-Version)%20%5B7t7cmkvaKbQ%5D.mp3",
             "https://raw.githubusercontent.com/ValeriaOtter/zerooo/main/02 Дирижабль [zWq5nKUlcOI].mp3",
@@ -2917,23 +2939,21 @@
         function displaySongTitle(songLink) {
             const songTitleElement = document.getElementById('songTitle');
             const songTitle = extractSongTitle(songLink);
+            const formattedTitle = songTitle.replace(" - ", "<br>");
 
+            songTitleElement.innerHTML = `
+        <div class="songName">${formattedTitle}</div>
+    `;
+        }
+        function togglePlayPause() {
+            const audioPlayer = document.getElementById('audioPlayer');
 
-            const dashIndex = songTitle.indexOf(" - ");
-            if (dashIndex !== -1) {
-                const artistName = songTitle.substring(0, dashIndex);
-                const songName = songTitle.substring(dashIndex + 3);
-
-                songTitleElement.innerHTML = `
-            <div class="songName">${artistName} -<br>${songName}</div>
-        `;
+            if (audioPlayer.paused) {
+                audioPlayer.play();
             } else {
-                songTitleElement.innerHTML = `
-            <div class="songName">${songTitle}</div>
-        `;
+                audioPlayer.pause();
             }
         }
-
         document.getElementById('songTitle').textContent = "";
 
     </script>
