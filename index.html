@@ -3008,35 +3008,35 @@
         }
 
 
-        audioPlayer.volume = 0.5;
-
         function adjustVolume(event) {
             event.preventDefault();
-
             const audioPlayer = document.getElementById('audioPlayer');
-            const target = event.target;
-            const clientY = event.clientY ||
-                (event.touches && event.touches[0].clientY) ||
-                (event.changedTouches && event.changedTouches[0].clientY);
+            const target = event.currentTarget
+            const clientY = (event.touches ? event.touches[0].clientY : event.clientY);
 
             const imageHeight = target.clientHeight;
             const clickPosition = clientY - target.getBoundingClientRect().top;
-
             if (clickPosition < imageHeight / 2) {
-                const newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5; 
+                const newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5;
                 audioPlayer.volume = newVolume;
-                console.log(`Ваш звук: ${newVolume}`);
+                console.log(`Ваш звук верх: ${newVolume}`);
             }
             else {
-                const newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4; 
+                const newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4;
                 audioPlayer.volume = newVolume;
-                console.log(`Ваш звук: ${newVolume}`);
+                console.log(`Ваш звук низ: ${newVolume}`);
             }
         }
 
-        const volumeElement = document.querySelector('.left-side, .right-side');
-        volumeElement.addEventListener('mousedown', adjustVolume);
-        volumeElement.addEventListener('touchstart', adjustVolume, { passive: false });
+
+        const leftSide = document.querySelector('.left-side');
+        const rightSide = document.querySelector('.right-side');
+
+        leftSide.addEventListener('mousedown', adjustVolume);
+        leftSide.addEventListener('touchstart', adjustVolume, { passive: false });
+
+        rightSide.addEventListener('mousedown', adjustVolume);
+        rightSide.addEventListener('touchstart', adjustVolume, { passive: false });
 
         document.getElementById('songTitle').textContent = "";
 
