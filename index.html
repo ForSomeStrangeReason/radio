@@ -131,9 +131,9 @@
         </div>
         <div class="image">
             <img src="photo.jpg" alt="Radio Image" class="radioImage">
-            <div class="left-side" onclick="adjustVolume(event)"></div>
-            <div class="right-side" onclick="adjustVolume(event)"></div>
-            <div class="center-area" onclick="togglePlayPause()"></div>
+            <div class="left-side" onclick="adjustVolume(event)" ontouchstart="adjustVolume(event)"></div>
+            <div class="right-side" onclick="adjustVolume(event)" ontouchstart="adjustVolume(event)"></div>
+            <div class="center-area" onclick="togglePlayPause()" ontouchstart="togglePlayPause()"></div>
         </div>
         <audio id="audioPlayer"></audio>
         <div id="songTitle" class="songTitle"></div>
@@ -3037,7 +3037,6 @@
 
         rightSide.addEventListener('mousedown', adjustVolume);
         rightSide.addEventListener('touchstart', adjustVolume, { passive: false });
-
         document.getElementById('songTitle').textContent = "";
 
     </script>
