@@ -3008,36 +3008,35 @@
         }
 
 
-        function adjustVolume(event) {
-            event.preventDefault();
-            const audioPlayer = document.getElementById('audioPlayer');
-            const target = event.currentTarget
-            const clientY = (event.touches ? event.touches[0].clientY : event.clientY);
+        function adjustVolume(event) {е
+    event.preventDefault();
+    event.stopPropagation();
+    const touch = event.type.includes('touch') ? 
+        (event.touches[0] || event.changedTouches[0]) : 
+        event;
 
-            const imageHeight = target.clientHeight;
-            const clickPosition = clientY - target.getBoundingClientRect().top;
-            if (clickPosition < imageHeight / 2) {
-                const newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5;
-                audioPlayer.volume = newVolume;
-                console.log(`Ваш звук верх: ${newVolume}`);
-            }
-            else {
-                const newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4;
-                audioPlayer.volume = newVolume;
-                console.log(`Ваш звук низ: ${newVolume}`);
-            }
-        }
+    const target = event.currentTarget;
+    const rect = target.getBoundingClientRect();
+    const clickPosition = touch.clientY - rect.top;
+    const imageHeight = target.clientHeight;
 
+    const audioPlayer = document.getElementById('audioPlayer');
 
-        const leftSide = document.querySelector('.left-side');
-        const rightSide = document.querySelector('.right-side');
-
-        leftSide.addEventListener('mousedown', adjustVolume);
-        leftSide.addEventListener('touchstart', adjustVolume, { passive: false });
-
-        rightSide.addEventListener('mousedown', adjustVolume);
-        rightSide.addEventListener('touchstart', adjustVolume, { passive: false });
-        document.getElementById('songTitle').textContent = "";
+    if (clickPosition < imageHeight / 2) {
+        const newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5;
+        audioPlayer.volume = Math.max(0, Math.min(1, newVolume));
+        console.log(`Громкость верх: ${newVolume}`);
+    } else {
+        const newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4;
+        audioPlayer.volume = Math.max(0, Math.min(1, newVolume));
+        console.log(`Громкость низ: ${newVolume}`);
+    }
+}
+document.querySelectorAll('.left-side, .right-side').forEach(element => {
+    element.addEventListener('mousedown', adjustVolume);
+    element.addEventListener('touchstart', adjustVolume, { passive: false });
+});
+document.getElementById('songTitle').textContent = "";
 
     </script>
 </body>
