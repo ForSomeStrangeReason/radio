@@ -131,9 +131,9 @@
         </div>
         <div class="image">
             <img src="photo.jpg" alt="Radio Image" class="radioImage">
-            <div class="left-side" onclick="adjustVolume(event)" ontouchstart="adjustVolume(event)"></div>
-            <div class="right-side" onclick="adjustVolume(event)" ontouchstart="adjustVolume(event)"></div>
-            <div class="center-area" onclick="togglePlayPause()" ontouchstart="togglePlayPause()"></div>
+            <div class="left-side" onclick="adjustVolume(event)"></div>
+            <div class="right-side" onclick="adjustVolume(event)"></div>
+            <div class="center-area" onclick="togglePlayPause()"></div>
         </div>
         <audio id="audioPlayer"></audio>
         <div id="songTitle" class="songTitle"></div>
@@ -3007,35 +3007,35 @@
             }
         }
 
+        audioPlayer.volume = 0.5;
 
-        function adjustVolume(event) {е
+function adjustVolume(event) {
     event.preventDefault();
-    event.stopPropagation();
-    const touch = event.type.includes('touch') ? 
-        (event.touches[0] || event.changedTouches[0]) : 
-        event;
-
-    const target = event.currentTarget;
-    const rect = target.getBoundingClientRect();
-    const clickPosition = touch.clientY - rect.top;
-    const imageHeight = target.clientHeight;
-
+    
     const audioPlayer = document.getElementById('audioPlayer');
-
+    const target = event.target;
+    const clientY = event.clientY || 
+                    (event.touches && event.touches[0].clientY) || 
+                    (event.changedTouches && event.changedTouches[0].clientY);
+    
+    const imageHeight = target.clientHeight;
+    const clickPosition = clientY - target.getBoundingClientRect().top;
     if (clickPosition < imageHeight / 2) {
-        const newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5;
-        audioPlayer.volume = Math.max(0, Math.min(1, newVolume));
-        console.log(`Громкость верх: ${newVolume}`);
-    } else {
-        const newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4;
-        audioPlayer.volume = Math.max(0, Math.min(1, newVolume));
-        console.log(`Громкость низ: ${newVolume}`);
+        const newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5; 
+        audioPlayer.volume = newVolume;
+        console.log(`Ваш звук: ${newVolume}`);
+    }
+ else {
+        const newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4; 
+        audioPlayer.volume = newVolume;
+        console.log(`Ваш звук: ${newVolume}`);
     }
 }
-document.querySelectorAll('.left-side, .right-side').forEach(element => {
-    element.addEventListener('mousedown', adjustVolume);
-    element.addEventListener('touchstart', adjustVolume, { passive: false });
-});
+
+const volumeElement = document.querySelector('.left-side, .right-side');
+volumeElement.addEventListener('mousedown', adjustVolume);
+volumeElement.addEventListener('touchstart', adjustVolume, { passive: false });
+
 document.getElementById('songTitle').textContent = "";
 
     </script>
