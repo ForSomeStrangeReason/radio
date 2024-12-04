@@ -18,14 +18,13 @@
 
         .radioContainer {
             text-align: center;
-            width: 300px;
+            width: 100%;
+            max-width: 300px;
             padding: 20px;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 4px 8px;
             height: 430px;
-
-
         }
 
         .radioImage {
@@ -113,6 +112,20 @@
             right: 25%;
             z-index: 2;
             cursor: pointer;
+        }
+
+        @media (max-width: 480px) {
+            .radioName {
+                font-size: 24px;
+            }
+
+            .songTitle {
+                font-size: 16px;
+            }
+
+            button {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
@@ -3002,35 +3015,37 @@
 
         audioPlayer.volume = 0.5;
 
+
         function adjustVolume(event) {
-    event.preventDefault();
+            event.preventDefault();
 
-    const audioPlayer = document.getElementById('audioPlayer');
-    const target = event.target;
-    let clientY = event.clientY;
-    if (event.touches && event.touches.length > 0) {
-        clientY = event.touches[0].clientY;
-    }
+            const audioPlayer = document.getElementById('audioPlayer');
+            const target = event.target;
+            let clientY = event.clientY;
+            if (event.touches && event.touches.length > 0) {
+                clientY = event.touches[0].clientY;
+            }
 
-    const imageHeight = target.clientHeight;
-    const clickPosition = clientY - target.getBoundingClientRect().top;
+            const imageHeight = target.clientHeight;
+            const clickPosition = clientY - target.getBoundingClientRect().top;
 
-    let newVolume;
-    if (clickPosition < imageHeight / 2) {
-        newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5;
-    } else {
-        newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4;
-    }
+            let newVolume;
+            if (clickPosition < imageHeight / 2) {
+                newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5;
+            } else {
+                newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4;
+            }
 
-    newVolume = Math.max(0, Math.min(newVolume, 1));
-    audioPlayer.volume = newVolume;
-    console.log(`Ваш звук: ${newVolume}`);
-}
-document.querySelector('.left-side').addEventListener('touchstart', adjustVolume, { passive: false });
-document.querySelector('.left-side').addEventListener('mousedown', adjustVolume);
+            newVolume = Math.max(0, Math.min(newVolume, 1));
+            audioPlayer.volume = newVolume;
+            console.log(`Ваш звук: ${newVolume}`);
+        }
 
-document.querySelector('.right-side').addEventListener('touchstart', adjustVolume, { passive: false });
-document.querySelector('.right-side').addEventListener('mousedown', adjustVolume);
+        document.querySelector('.left-side').addEventListener('touchstart', adjustVolume, { passive: false });
+        document.querySelector('.left-side').addEventListener('mousedown', adjustVolume);
+
+        document.querySelector('.right-side').addEventListener('touchstart', adjustVolume, { passive: false });
+        document.querySelector('.right-side').addEventListener('mousedown', adjustVolume);
 
         document.getElementById('songTitle').textContent = "";
 
