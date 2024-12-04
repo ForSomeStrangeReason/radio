@@ -115,12 +115,6 @@
             cursor: pointer;
         }
 
-        .left-side,
-        .right-side {
-            user-select: none;
-            -webkit-user-select: none;
-           /* touch-action: none; может мешает */
-        }
     </style>
 </head>
 
@@ -3009,34 +3003,34 @@
 
         audioPlayer.volume = 0.5;
 
-function adjustVolume(event) {
-    event.preventDefault();
-    
-    const audioPlayer = document.getElementById('audioPlayer');
-    const target = event.target;
-    const clientY = event.clientY || 
-                    (event.touches && event.touches[0].clientY) || 
-                    (event.changedTouches && event.changedTouches[0].clientY);
-    
-    const imageHeight = target.clientHeight;
-    const clickPosition = clientY - target.getBoundingClientRect().top;
-    if (clickPosition < imageHeight / 2) {
-        const newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5; 
-        audioPlayer.volume = newVolume;
-        console.log(`Ваш звук: ${newVolume}`);
-    }
- else {
-        const newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4; 
-        audioPlayer.volume = newVolume;
-        console.log(`Ваш звук: ${newVolume}`);
-    }
-}
+        function adjustVolume(event) {
+            event.preventDefault();
 
-const volumeElement = document.querySelector('.left-side, .right-side');
-volumeElement.addEventListener('mousedown', adjustVolume);
-volumeElement.addEventListener('touchstart', adjustVolume, { passive: false });
+            const audioPlayer = document.getElementById('audioPlayer');
+            const target = event.target;
+            const clientY = event.clientY ||
+                (event.touches && event.touches[0].clientY) ||
+                (event.changedTouches && event.changedTouches[0].clientY);
 
-document.getElementById('songTitle').textContent = "";
+            const imageHeight = target.clientHeight;
+            const clickPosition = clientY - target.getBoundingClientRect().top;
+            if (clickPosition < imageHeight / 2) {
+                const newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5;
+                audioPlayer.volume = newVolume;
+                console.log(`Ваш звук: ${newVolume}`);
+            }
+            else {
+                const newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4;
+                audioPlayer.volume = newVolume;
+                console.log(`Ваш звук: ${newVolume}`);
+            }
+        }
+
+        const volumeElement = document.querySelector('.left-side, .right-side');
+        volumeElement.addEventListener('mousedown', adjustVolume);
+        volumeElement.addEventListener('touchstart', adjustVolume, { passive: false });
+
+        document.getElementById('songTitle').textContent = "";
 
     </script>
 </body>
