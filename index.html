@@ -114,7 +114,6 @@
             z-index: 2;
             cursor: pointer;
         }
-
     </style>
 </head>
 
@@ -3008,27 +3007,32 @@
 
             const audioPlayer = document.getElementById('audioPlayer');
             const target = event.target;
-            const clientY = event.clientY ||
-                (event.touches && event.touches[0].clientY) ||
-                (event.changedTouches && event.changedTouches[0].clientY);
+
+            let clientY = event.clientY;
+            if (event.touches) {
+                clientY = event.touches[0].clientY;
+            }
 
             const imageHeight = target.clientHeight;
             const clickPosition = clientY - target.getBoundingClientRect().top;
-            if (clickPosition < imageHeight / 2) {
-                const newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5;
-                audioPlayer.volume = newVolume;
-                console.log(`Ваш звук: ${newVolume}`);
-            }
-            else {
-                const newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4;
-                audioPlayer.volume = newVolume;
-                console.log(`Ваш звук: ${newVolume}`);
-            }
-        }
 
+            let newVolume;
+            if (clickPosition < imageHeight / 2) {
+                newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5;
+            } else {
+                newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4;
+            }
+
+            newVolume = Math.max(0, Math.min(newVolume, 1));
+            audioPlayer.volume = newVolume;
+            console.log(`Ваш звук: ${newVolume}`);
+        }
         const volumeElement = document.querySelector('.left-side, .right-side');
+
         volumeElement.addEventListener('mousedown', adjustVolume);
         volumeElement.addEventListener('touchstart', adjustVolume, { passive: false });
+        volumeElement.addEventListener('touchmove', adjustVolume, { passive: false });
+        volumeElement.addEventListener('touchend', (event) => event.preventDefault(), { passive: false });
 
         document.getElementById('songTitle').textContent = "";
 
