@@ -37,7 +37,7 @@
 
 
 
-        
+
         .radioName {
             font-size: 28px;
             margin-bottom: 15px;
@@ -45,6 +45,7 @@
             cursor: pointer;
             color: rgb(2, 115, 143);
         }
+
         .radioName span {
             color: #f4b062;
         }
@@ -66,16 +67,53 @@
             color: rgb(2, 115, 143);
             font-weight: bold;
             text-align: center;
-            
+
         }
+
         .songName span {
             visibility: hidden;
             display: inline-block;
             width: 10px;
         }
 
-        
-        
+        .image {
+            position: relative;
+        }
+
+        .radioImage {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .left-side,
+        .right-side {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 25%;
+            z-index: 1;
+        }
+
+        .left-side {
+            left: 0;
+            cursor: pointer;
+        }
+
+        .right-side {
+            right: 0;
+            cursor: pointer;
+        }
+
+        .center-area {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 25%;
+            right: 25%;
+            z-index: 2;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -84,7 +122,12 @@
         <div class="radioName" onclick="playRandomSong()">
             <span>R</span>adio <span>M</span>urka
         </div>
-        <img src="photo.jpg" alt="Radio Image" class="radioImage" onclick="togglePlayPause()">
+        <div class="image">
+            <img src="photo.jpg" alt="Radio Image" class="radioImage">
+            <div class="left-side" onclick="adjustVolume(event)"></div>
+            <div class="right-side" onclick="adjustVolume(event)"></div>
+            <div class="center-area" onclick="togglePlayPause()"></div>
+        </div>
         <audio id="audioPlayer"></audio>
         <div id="songTitle" class="songTitle"></div>
     </div>
@@ -2885,6 +2928,8 @@
         document.getElementById('audioPlayer').addEventListener('ended', function b() { console.log("ended") })
         document.getElementById('audioPlayer').addEventListener('canplay', function c() { console.log("canplay") })
         document.getElementById('audioPlayer').addEventListener('loadeddata', function l() { console.log("loadeddata") })
+        const element = document.querySelector('.image');
+
 
         let currentSongIndex = 0;
 
@@ -2952,6 +2997,24 @@
                 audioPlayer.play();
             } else {
                 audioPlayer.pause();
+            }
+        }
+
+
+        audioPlayer.volume = 0.5;
+        function adjustVolume(event) {
+            const audioPlayer = document.getElementById('audioPlayer');
+            const imageHeight = event.target.clientHeight;
+            const clickPosition = event.clientY - event.target.getBoundingClientRect().top;
+            if (clickPosition < imageHeight / 2) {
+                const newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5;
+                audioPlayer.volume = newVolume;
+                console.log(`Ваш звук: ${newVolume}`);
+            }
+            else {
+                const newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4;
+                audioPlayer.volume = newVolume;
+                console.log(`Ваш звук: ${newVolume}`);
             }
         }
         document.getElementById('songTitle').textContent = "";
