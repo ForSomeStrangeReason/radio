@@ -30,8 +30,9 @@
         .radioImage {
             width: 100%;
             border-radius: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 30px;
             cursor: pointer;
+            margin-top: 15px;
         }
 
 
@@ -43,6 +44,7 @@
             font-weight: bold;
             cursor: pointer;
             color: rgb(2, 115, 143);
+            display: inline;
         }
 
         .radioName span {
@@ -114,19 +116,6 @@
             cursor: pointer;
         }
 
-        @media (max-width: 480px) {
-            .radioName {
-                font-size: 24px;
-            }
-
-            .songTitle {
-                font-size: 16px;
-            }
-
-            button {
-                font-size: 18px;
-            }
-        }
     </style>
 </head>
 
@@ -136,7 +125,7 @@
             <span>R</span>adio <span>M</span>urka
         </div>
         <div class="image">
-            <img src="photo.jpg" alt="Radio Image" class="radioImage">
+            <img src="cat.png" alt="Radio Image" class="radioImage">
             <div class="left-side" onclick="adjustVolume(event)"></div>
             <div class="right-side" onclick="adjustVolume(event)"></div>
             <div class="center-area" onclick="togglePlayPause()"></div>
@@ -3013,62 +3002,22 @@
             }
         }
 
-
-
-
-        function isVolumeChangeable(audioElement) {
-        const lastSetting = audioElement.volume;
-        audioElement.volume = 0.9;
-        const changed = audioElement.volume === 0.9; 
-        audioElement.volume = lastSetting; 
-        return changed;
-    }
-
-    const audioPlayer = document.getElementById('audioPlayer');
-    const canChangeVolume = isVolumeChangeable(audioPlayer);
-
-    if (!canChangeVolume) {
-        console.log("Изменение громкости программно на этом устройстве не поддерживается.");
-    }
-
-    function adjustVolume(event) {
-        if (!canChangeVolume) {
-            alert('Изменение громкости недоступно на этом устройстве.');
-            return;
+        audioPlayer.volume = 0.5;
+        function adjustVolume(event) {
+            const audioPlayer = document.getElementById('audioPlayer');
+            const imageHeight = event.target.clientHeight;
+            const clickPosition = event.clientY - event.target.getBoundingClientRect().top;
+            if (clickPosition < imageHeight / 2) {
+                const newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5;
+                audioPlayer.volume = newVolume;
+                console.log(`Ваш звук: ${newVolume}`);
+            }
+            else {
+                const newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4;
+                audioPlayer.volume = newVolume;
+                console.log(`Ваш звук: ${newVolume}`);
+            }
         }
-
-        event.preventDefault();
-        const target = event.target;
-        let clientY = event.clientY;
-
-        if (event.touches && event.touches.length > 0) {
-            clientY = event.touches[0].clientY;
-        }
-
-        const targetRect = target.getBoundingClientRect();
-        const imageHeight = targetRect.height;
-        const clickPosition = clientY - targetRect.top;
-
-        let newVolume;
-        if (clickPosition < imageHeight / 2) {
-            newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5;
-        } else {
-            newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4;
-        }
-
-        newVolume = Math.max(0, Math.min(newVolume, 1));
-        audioPlayer.volume = newVolume;
-
-        console.log(`Ваш звук: ${newVolume}`);
-    }
-
-    document.querySelector('.left-side').addEventListener('touchstart', adjustVolume, { passive: false });
-    document.querySelector('.left-side').addEventListener('mousedown', adjustVolume);
-
-    document.querySelector('.right-side').addEventListener('touchstart', adjustVolume, { passive: false });
-    document.querySelector('.right-side').addEventListener('mousedown', adjustVolume);
-
-    audioPlayer.volume = 0.5;
         document.getElementById('songTitle').textContent = "";
 
     </script>
