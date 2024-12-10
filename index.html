@@ -124,7 +124,7 @@
             <span>R</span>adio <span>M</span>urka
         </div>
         <div class="image">
-            <img  id="myImage" src="cat.png" alt="Radio Image" class="radioImage">
+            <img id="deviceImage" src="cat.png" alt="Radio Image" class="radioImage">
             <div class="left-side" onclick="adjustVolume(event)"></div>
             <div class="right-side" onclick="adjustVolume(event)"></div>
             <div class="center-area" onclick="togglePlayPause()"></div>
@@ -2929,13 +2929,17 @@
         document.getElementById('audioPlayer').addEventListener('ended', function b() { console.log("ended") })
         document.getElementById('audioPlayer').addEventListener('canplay', function c() { console.log("canplay") })
         document.getElementById('audioPlayer').addEventListener('loadeddata', function l() { console.log("loadeddata") })
-        const element = document.querySelector('.image');
+
         document.addEventListener('DOMContentLoaded', function () {
             const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+            const imageElement = document.getElementById('deviceImage');
+
             if (isIOS) {
-                document.getElementById('myImage').style.display = 'none';
+                imageElement.src = 'photo.jpg';
+            } else {
+                imageElement.src = 'cat.png';
             }
-        });
+        })
 
 
 
