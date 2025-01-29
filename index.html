@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -90,8 +89,8 @@
 
         .fullscreen-song-list {
             display: none;
-            position: sticky;
-            top: 0;
+            position: absolute;
+            bottom: -100px;
             left: 0;
             width: 100%;
             /*height: 100vh;*/
@@ -223,16 +222,16 @@
 
         .favorites-list {
             display: none;
-            position: fixed;
-            top: 0;
+            position: absolute;
+            bottom: -100px;
             left: 0;
             width: 100%;
-            height: 100vh;
+            height: 10vh;
             background-color: rgba(2, 115, 143, 0.95);
             z-index: 1000;
-            overflow-y: auto;
             padding: 20px;
             box-sizing: border-box;
+            text-align: center;
         }
     </style>
 </head>
