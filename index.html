@@ -2132,7 +2132,7 @@
         function showOnlyFavorites() {
             const menuOptions = document.getElementById('menuOptions');
             const favoritesList = document.getElementById('favoritesList');
-
+            const pauseButton = document.querySelector('.pause');
             menuOptions.style.display = 'none';
             favoritesList.style.display = 'block';
 
@@ -2152,12 +2152,12 @@
                     audioPlayer.src = song;
                     audioPlayer.play();
                     document.querySelector('.pause').innerHTML = '<img src="pause4.png" alt="Pause" class="icon">';
+                    pauseButton.style.animation = 'none'; 
                     displaySongTitle(song);
                     favoritesList.style.display = 'none';
                 };
                 content.appendChild(songLink);
             });
-            
         }
         document.body.insertAdjacentHTML('beforeend', `
             <div id="menuOptions" class="menu-options">
