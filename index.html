@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -295,9 +296,81 @@
             box-sizing: border-box;
             text-align: center;
         }
-        .highlight{
-            background-color: #f4b062; 
+
+        .highlight {
+            background-color: #f4b062;
             color: white;
+        }
+
+        .light {
+            position: absolute;
+            height: auto;
+            opacity: 0;
+            transition: opacity 0.1s ease;
+        }
+
+        #leftL {
+            top: 3%;
+            left: 10px;
+            transform: scaleX(-1) rotate(-20deg);
+            width: 35px;
+        }
+
+        #leftM {
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%) scaleX(-1) rotate(-20deg);
+            width: 30px;
+        }
+
+        #leftS {
+            bottom: 7%;
+            left: 12px;
+            transform: scaleX(-1) rotate(-20deg);
+            width: 20px;
+        }
+
+        #rightL {
+            top: 3%;
+            right: 10px;
+            transform: rotate(-20deg);
+            width: 35px;
+        }
+
+        #rightM {
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%) rotate(-20deg);
+            width: 30px;
+        }
+
+        #rightS {
+            bottom: 7%;
+            right: 12px;
+            transform: rotate(-20deg);
+            width: 20px;
+        }
+
+        @keyframes quickFlash {
+            0% {
+                opacity: 0;
+            }
+
+            5% {
+                opacity: 1;
+            }
+
+            95% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .flash-animation {
+            animation: quickFlash 0.2s linear;
         }
     </style>
 </head>
@@ -309,6 +382,12 @@
         </div>
         <div class="image">
             <img id="deviceImage" src="cat.png" alt="Radio Image" class="radioImage">
+            <img class="light" src="volume1.png" alt="leftL" id="leftL">
+            <img class="light" src="volume1.png" alt="leftM" id="leftM">
+            <img class="light" src="volume1.png" alt="leftS" id="leftS">
+            <img class="light" src="volume1.png" alt="rightL" id="rightL">
+            <img class="light" src="volume1.png" alt="rigthM" id="rightM">
+            <img class="light" src="volume1.png" alt="rightS" id="rightS">
             <button class="pause" onclick="togglePlayPause()">
                 <img src="play2.png" alt="Play" class="icon">
             </button>
@@ -336,7 +415,7 @@
 
     <script>
         let musicLinks = [
-         "https://raw.githubusercontent.com/ForSomeStrangeReason/part1/main/05 - 130 по встречной на старенькой Vespa.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part1/main/05 - 130 по встречной на старенькой Vespa.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part1/main/2%20Brothers%20On%20The%204th%20Floor%20-%20Dreams%20(Will%20Come%20Alive).mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part1/main/2%20Brothers%20On%20The%204th%20Floor%20-%20Never%20Alone.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part1/main/2%20UNLIMITED%20-%20No%20limit%20.mp3",
@@ -1944,7 +2023,7 @@
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part14/main/Jay-Jay%20Johnson%20-%20Rush%20.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part14/main/Виктор Цой (Кино) - Электричка .mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part14/main/Сироткин - Выше домов   .mp3",
-            ];
+        ];
 
         let originalMusicLinks = [...musicLinks];
         let currentSongIndex = 0;
@@ -1979,7 +2058,7 @@
                 document.querySelector('.pause').style.animation = 'none';
                 isRadioClicked = true;
             }
-            
+
             const currentPlaylist = playingFavorites ? favorites : musicLinks;
             if (musicLinks.length === 0) {
                 console.log('No songs');
@@ -2052,22 +2131,39 @@
             });
         }
 
-        audioPlayer.volume = 0.5;
         function adjustVolume(event) {
             const audioPlayer = document.getElementById('audioPlayer');
             const imageHeight = event.target.clientHeight;
             const clickPosition = event.clientY - event.target.getBoundingClientRect().top;
-            if (clickPosition < imageHeight / 2) {
-                const newVolume = 1 - (clickPosition / (imageHeight / 2)) * 0.5;
-                audioPlayer.volume = newVolume;
-                console.log(`Ваш звук: ${newVolume}`);
+            const side = event.clientX < window.innerWidth / 2 ? 'left' : 'right';
+
+            let newVolume;
+            let lightToShow;
+
+            if (clickPosition < imageHeight / 3) {
+                newVolume = 1.0;
+                lightToShow = `${side}L`;
+            } else if (clickPosition < (imageHeight * 2 / 3)) {
+                newVolume = 0.5;
+                lightToShow = `${side}M`;
+            } else {
+                newVolume = 0.1;
+                lightToShow = `${side}S`;
             }
-            else {
-                const newVolume = 0.5 - ((clickPosition - imageHeight / 2) / (imageHeight / 2)) * 0.4;
-                audioPlayer.volume = newVolume;
-                console.log(`Ваш звук: ${newVolume}`);
-            }
+
+            audioPlayer.volume = newVolume;
+            console.log(`Volume set to: ${newVolume}`);
+
+            const light = document.getElementById(lightToShow);
+            light.classList.remove('flash-animation');
+            void light.offsetWidth;
+            light.classList.add('flash-animation');
+            setTimeout(() => {
+                light.classList.remove('flash-animation');
+            }, 200);
         }
+
+        document.querySelector('.image').addEventListener('click', adjustVolume);
 
 
         function playSpecificSong(index) {
@@ -2080,7 +2176,7 @@
             audioPlayer.play();
             pauseButton.innerHTML = '<img src="pause4.png" alt="Pause" class="icon">';
             displaySongTitle(specificSong);
-            
+
         }
 
         function togglePlayPause() {
@@ -2093,7 +2189,7 @@
             } else {
                 audioPlayer.pause();
                 pauseButton.innerHTML = '<img src="play2.png" alt="Play" class="icon">';
-              
+
             }
         }
 
@@ -2152,7 +2248,7 @@
                     audioPlayer.src = song;
                     audioPlayer.play();
                     document.querySelector('.pause').innerHTML = '<img src="pause4.png" alt="Pause" class="icon">';
-                    pauseButton.style.animation = 'none'; 
+                    pauseButton.style.animation = 'none';
                     displaySongTitle(song);
                     favoritesList.style.display = 'none';
                 };
@@ -2163,8 +2259,68 @@
             <div id="menuOptions" class="menu-options">
                 <a href="#" class="menu-link" onclick="showFullPlaylist()">All Songs</a>
                 <a href="#" class="menu-link" onclick="showOnlyFavorites()">Favorites</a>
+                <a href="#" class="menu-link" onclick="showOnlyEnglish()">Only english</a>
+                <a href="#" class="menu-link" onclick="showOnlyRussian()">Only russian</a>
             </div>
         `);
+        function isRussianSong(songTitle) {
+            return /[а-яА-ЯёЁ]/.test(songTitle);
+        }
+
+        function showOnlyEnglish() {
+            const menuOptions = document.getElementById('menuOptions');
+            const fullscreenList = document.getElementById('fullscreenSongList');
+            menuOptions.style.display = 'none';
+            fullscreenList.style.display = 'flex';
+
+            const content = fullscreenList.querySelector('.fullscreen-song-list-content');
+            content.innerHTML = '';
+
+            originalMusicLinks.forEach((song) => {
+                const songTitle = extractSongTitle(song);
+                if (!isRussianSong(songTitle)) {
+                    const songLink = document.createElement('a');
+                    songLink.href = '#';
+                    songLink.classList.add('song-link');
+                    songLink.textContent = songTitle;
+                    songLink.onclick = (e) => {
+                        e.preventDefault();
+                        playingFavorites = false;
+                        currentSongIndex = originalMusicLinks.indexOf(song);
+                        playSpecificSong(currentSongIndex);
+                        fullscreenList.style.display = 'none';
+                    };
+                    content.appendChild(songLink);
+                }
+            });
+        }
+        function showOnlyRussian() {
+            const menuOptions = document.getElementById('menuOptions');
+            const fullscreenList = document.getElementById('fullscreenSongList');
+            menuOptions.style.display = 'none';
+            fullscreenList.style.display = 'flex';
+
+            const content = fullscreenList.querySelector('.fullscreen-song-list-content');
+            content.innerHTML = '';
+
+            originalMusicLinks.forEach((song) => {
+                const songTitle = extractSongTitle(song);
+                if (isRussianSong(songTitle)) {
+                    const songLink = document.createElement('a');
+                    songLink.href = '#';
+                    songLink.classList.add('song-link');
+                    songLink.textContent = songTitle;
+                    songLink.onclick = (e) => {
+                        e.preventDefault();
+                        playingFavorites = false;
+                        currentSongIndex = originalMusicLinks.indexOf(song);
+                        playSpecificSong(currentSongIndex);
+                        fullscreenList.style.display = 'none';
+                    };
+                    content.appendChild(songLink);
+                }
+            });
+        }
         function setupSearchFunctionality() {
             const searchAllInput = document.querySelector('.searchAll');
             const searchFavInput = document.querySelector('.searchFav');
@@ -2220,8 +2376,8 @@
             songs.forEach(song => {
                 const text = song.textContent.toLowerCase();
                 const transliteratedText = transliterate(text);
-                
-                if (text.includes(normalizedQuery) || 
+
+                if (text.includes(normalizedQuery) ||
                     transliteratedText.includes(transliteratedQuery)) {
                     song.style.display = '';
                     song.innerHTML = highlightMatch(song.textContent, query);
@@ -2236,10 +2392,10 @@
 
             const regexOriginal = new RegExp(`(${searchTerm})`, 'gi');
             const regexTransliterated = new RegExp(`(${transliterate(searchTerm)})`, 'gi');
-            
+
             let highlightedText = text.replace(regexOriginal, `<mark class="highlight">$1</mark>`);
             highlightedText = highlightedText.replace(regexTransliterated, `<mark class="highlight">$1</mark>`);
-            
+
             return highlightedText;
         }
 
@@ -2247,11 +2403,11 @@
             const searchAllInput = document.querySelector('.searchAll');
             const searchFavInput = document.querySelector('.searchFav');
 
-            searchAllInput.addEventListener('input', function() {
+            searchAllInput.addEventListener('input', function () {
                 filterSongs(this.value, '#fullscreenSongList .fullscreen-song-list-content');
             });
 
-            searchFavInput.addEventListener('input', function() {
+            searchFavInput.addEventListener('input', function () {
                 filterSongs(this.value, '#favoritesList .fullscreen-song-list-content', true);
             });
         }
