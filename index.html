@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2227,11 +2226,12 @@
 
         function showOnlyFavorites() {
             const menuOptions = document.getElementById('menuOptions');
+            const fullscreenList = document.getElementById('fullscreenSongList');
             const favoritesList = document.getElementById('favoritesList');
             const pauseButton = document.querySelector('.pause');
             menuOptions.style.display = 'none';
             favoritesList.style.display = 'block';
-
+            fullscreenList.style.display = 'none';
             const content = favoritesList.querySelector('.fullscreen-song-list-content');
             content.innerHTML = '';
 
@@ -2263,6 +2263,20 @@
                 <a href="#" class="menu-link" onclick="showOnlyRussian()">Only russian</a>
             </div>
         `);
+        function toggleMenu() {
+            let menuOptions = document.getElementById("menuOptions");
+            let fullscreenList = document.getElementById("fullscreenSongList");
+
+            if (menuOptions.style.display === "none" || !menuOptions.style.display) {
+                menuOptions.style.display = "block";
+                favoritesList.style.display = "none";
+                fullscreenList.style.display = "none";
+                const content = fullscreenList.querySelector('.fullscreen-song-list-content');
+                content.innerHTML = '';
+            } else {
+                menuOptions.style.display = "none";
+            }
+        }
         function isRussianSong(songTitle) {
             return /[а-яА-ЯёЁ]/.test(songTitle);
         }
@@ -2270,9 +2284,10 @@
         function showOnlyEnglish() {
             const menuOptions = document.getElementById('menuOptions');
             const fullscreenList = document.getElementById('fullscreenSongList');
+            favoritesList.style.display = 'block';
             menuOptions.style.display = 'none';
             fullscreenList.style.display = 'flex';
-
+            favoritesList.style.display = 'none';
             const content = fullscreenList.querySelector('.fullscreen-song-list-content');
             content.innerHTML = '';
 
@@ -2299,7 +2314,7 @@
             const fullscreenList = document.getElementById('fullscreenSongList');
             menuOptions.style.display = 'none';
             fullscreenList.style.display = 'flex';
-
+            favoritesList.style.display = 'none';
             const content = fullscreenList.querySelector('.fullscreen-song-list-content');
             content.innerHTML = '';
 
@@ -2386,17 +2401,26 @@
                 }
             });
         }
-
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
         function highlightMatch(text, searchTerm) {
             if (!searchTerm) return text;
 
-            const regexOriginal = new RegExp(`(${searchTerm})`, 'gi');
-            const regexTransliterated = new RegExp(`(${transliterate(searchTerm)})`, 'gi');
+            const escapedSearchTerm = escapeRegExp(searchTerm);
+            const transliteratedSearchTerm = transliterate(searchTerm);
 
-            let highlightedText = text.replace(regexOriginal, `<mark class="highlight">$1</mark>`);
-            highlightedText = highlightedText.replace(regexTransliterated, `<mark class="highlight">$1</mark>`);
+            function replaceWithHighlight(match) {
+                return `<span class="highlight">${match}</span>`;
+            }
 
-            return highlightedText;
+            if (escapedSearchTerm === transliteratedSearchTerm) {
+                return text.replace(new RegExp(`(${escapedSearchTerm})`, 'gi'), replaceWithHighlight);
+            }
+
+            return text
+                .replace(new RegExp(`(${escapedSearchTerm})`, 'gi'), replaceWithHighlight)
+                .replace(new RegExp(`(${transliteratedSearchTerm})`, 'gi'), replaceWithHighlight);
         }
 
         function setupSearchFunctionality() {
@@ -2411,7 +2435,16 @@
                 filterSongs(this.value, '#favoritesList .fullscreen-song-list-content', true);
             });
         }
-
+        document.addEventListener("keydown", (event) => {
+            if (event.key === " ") togglePlayPause();
+            if (event.key === "ArrowRight") playRandomSong();
+            if (event.code === "KeyM") toggleMenu()
+            if (event.code === "KeyF") toggleFavorite()
+            if (event.code === "KeyA") showFullPlaylist()
+            if (event.code === "KeyL") showOnlyFavorites()
+            if (event.code === "KeyE") showOnlyEnglish()
+            if (event.code === "KeyR") showOnlyRussian()
+        })
         document.addEventListener('DOMContentLoaded', setupSearchFunctionality);
     </script>
 </body>
