@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2135,7 +2136,6 @@
             const imageHeight = event.target.clientHeight;
             const clickPosition = event.clientY - event.target.getBoundingClientRect().top;
             const side = event.clientX < window.innerWidth / 2 ? 'left' : 'right';
-
             let newVolume;
             let lightToShow;
 
@@ -2150,6 +2150,24 @@
                 lightToShow = `${side}S`;
             }
 
+
+            if (event.type === 'keydown') {
+                const volumeStep = 0.1;
+
+                if (event.key === '+' || event.key === '=' || event.code === "ArrowUp" || event.key === "PageUp") {
+                    newVolume = Math.min(1, audioPlayer.volume + volumeStep);
+                } else if (event.key === '-' || event.key === '_' || event.code === "ArrowDown" || event.key === "PageDown") {
+                    newVolume = Math.max(0, audioPlayer.volume - volumeStep);
+                }
+
+                if (newVolume >= 0.7) {
+                    lightToShow = `${side}L`;
+                } else if (newVolume >= 0.3) {
+                    lightToShow = `${side}M`;
+                } else {
+                    lightToShow = `${side}S`;
+                }
+            }
             audioPlayer.volume = newVolume;
             console.log(`Volume set to: ${newVolume}`);
 
@@ -2161,7 +2179,7 @@
                 light.classList.remove('flash-animation');
             }, 200);
         }
-
+        document.addEventListener('keydown', adjustVolume);
         document.querySelector('.image').addEventListener('click', adjustVolume);
 
 
@@ -2389,39 +2407,44 @@
             const transliteratedQuery = transliterate(normalizedQuery);
 
             songs.forEach(song => {
-                const text = song.textContent.toLowerCase();
-                const transliteratedText = transliterate(text);
+                const text = song.textContent;
+                const words = text.toLowerCase().split(/\s+/);
+                const transliteratedWords = transliterate(text.toLowerCase()).split(/\s+/);
 
-                if (text.includes(normalizedQuery) ||
-                    transliteratedText.includes(transliteratedQuery)) {
+                if (words.some(word => word.startsWith(normalizedQuery)) ||
+                    transliteratedWords.some(word => word.startsWith(transliteratedQuery))) {
                     song.style.display = '';
-                    song.innerHTML = highlightMatch(song.textContent, query);
+                    song.innerHTML = highlightMatch(text, query);
                 } else {
                     song.style.display = 'none';
                 }
             });
         }
+
         function escapeRegExp(string) {
             return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         }
+
         function highlightMatch(text, searchTerm) {
             if (!searchTerm) return text;
 
-            const escapedSearchTerm = escapeRegExp(searchTerm);
-            const transliteratedSearchTerm = transliterate(searchTerm);
+            const escapedSearchTerm = escapeRegExp(searchTerm.toLowerCase());
+            const transliteratedSearchTerm = transliterate(searchTerm.toLowerCase());
 
-            function replaceWithHighlight(match) {
-                return `<span class="highlight">${match}</span>`;
-            }
+            const words = text.split(/\s+/);
+            return words.map(word => {
+                const lowerWord = word.toLowerCase();
+                const transliteratedWord = transliterate(lowerWord);
 
-            if (escapedSearchTerm === transliteratedSearchTerm) {
-                return text.replace(new RegExp(`(${escapedSearchTerm})`, 'gi'), replaceWithHighlight);
-            }
-
-            return text
-                .replace(new RegExp(`(${escapedSearchTerm})`, 'gi'), replaceWithHighlight)
-                .replace(new RegExp(`(${transliteratedSearchTerm})`, 'gi'), replaceWithHighlight);
+                if (lowerWord.startsWith(escapedSearchTerm) ||
+                    transliteratedWord.startsWith(transliteratedSearchTerm)) {
+                    return `<span class="highlight">${word}</span>`;
+                }
+                return word;
+            }).join(' ');
         }
+
+
 
         function setupSearchFunctionality() {
             const searchAllInput = document.querySelector('.searchAll');
