@@ -372,10 +372,97 @@
         .flash-animation {
             animation: quickFlash 0.2s linear;
         }
+
+        .darkMode {
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            padding: 5px 10px;
+
+        }
+
+        body.dark-mode {
+            background-color: #1a1a1a;
+        }
+
+        .dark-mode .radioContainer {
+            background-color: #2d2d2d;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .dark-mode .radioName {
+            color: rgb(2, 115, 143);
+        }
+
+        .dark-mode .radioName span {
+            color: #f4b062;
+        }
+
+        .dark-mode .songTitle {
+            color: rgb(2, 115, 143);
+        }
+
+        .dark-mode .pause {
+            background-color: #2d2d2d;
+            border-color: rgb(2, 115, 143);
+        }
+
+        .darkMode {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .darkMode:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .darkMode img {
+            width: 25px;
+            height: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .darkMode:hover img {
+            transform: scale(1.1);
+        }
+
+        .dark-mode .menu-options {
+            background-color: #1a1a1a;
+        }
+
+        .dark-mode .menu-link {
+            color: #fff1d2;
+        }
+
+        .dark-mode .menu-link:hover {
+            color: #f4b062;
+        }
+
+        .dark-mode .searchFav {
+            background-color: #2d2d2d;
+            color: #fff1d2;
+        }
+
+        .dark-mode .searchAll {
+            background-color: #2d2d2d;
+            color: #fff1d2;
+        }
+
+        .dark-mode .fullscreen-song-list {
+            background-color: #1a1a1a;
+        }
     </style>
 </head>
 
 <body>
+    <div class="darkMode" onclick="toggleDarkMode()">
+        <img id="themeIcon" src="moon.png" alt="Theme Toggle" width="25px" height="25px">
+    </div>
     <div class="radioContainer">
         <div class="radioName" onclick="playRandomSong()">
             <span>R</span>adio <span>M</span>urka
@@ -414,6 +501,10 @@
     </div>
 
     <script>
+
+
+
+
         let musicLinks = [
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part1/main/05 - 130 по встречной на старенькой Vespa.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part1/main/2%20Brothers%20On%20The%204th%20Floor%20-%20Dreams%20(Will%20Come%20Alive).mp3",
@@ -2132,31 +2223,33 @@
         }
 
         function adjustVolume(event) {
+            if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+                event.preventDefault();
+            }
             const audioPlayer = document.getElementById('audioPlayer');
             const imageHeight = event.target.clientHeight;
             const clickPosition = event.clientY - event.target.getBoundingClientRect().top;
             const side = event.clientX < window.innerWidth / 2 ? 'left' : 'right';
             let newVolume;
             let lightToShow;
-
-            if (clickPosition < imageHeight / 3) {
-                newVolume = 1.0;
-                lightToShow = `${side}L`;
-            } else if (clickPosition < (imageHeight * 2 / 3)) {
-                newVolume = 0.5;
-                lightToShow = `${side}M`;
-            } else {
-                newVolume = 0.1;
-                lightToShow = `${side}S`;
+            if (event.type === 'click') {
+                if (clickPosition < imageHeight / 3) {
+                    newVolume = 1.0;
+                    lightToShow = `${side}L`;
+                } else if (clickPosition < (imageHeight * 2 / 3)) {
+                    newVolume = 0.5;
+                    lightToShow = `${side}M`;
+                } else {
+                    newVolume = 0.1;
+                    lightToShow = `${side}S`;
+                }
             }
-
-
             if (event.type === 'keydown') {
                 const volumeStep = 0.1;
 
-                if (event.key === '+' || event.key === '=' || event.code === "ArrowUp" || event.key === "PageUp") {
+                if (event.key === '+' || event.key === '=' || event.code === "ArrowUp") {
                     newVolume = Math.min(1, audioPlayer.volume + volumeStep);
-                } else if (event.key === '-' || event.key === '_' || event.code === "ArrowDown" || event.key === "PageDown") {
+                } else if (event.key === '-' || event.key === '_' || event.code === "ArrowDown") {
                     newVolume = Math.max(0, audioPlayer.volume - volumeStep);
                 }
 
@@ -2168,8 +2261,15 @@
                     lightToShow = `${side}S`;
                 }
             }
+
+
+            if (isNaN(newVolume) || newVolume < 0 || newVolume > 1) {
+                console.error('Некорректное значение громкости:', newVolume);
+                return;
+            }
+
             audioPlayer.volume = newVolume;
-            console.log(`Volume set to: ${newVolume}`);
+            console.log(`Ваш звук: ${newVolume}`);
 
             const light = document.getElementById(lightToShow);
             light.classList.remove('flash-animation');
@@ -2179,8 +2279,10 @@
                 light.classList.remove('flash-animation');
             }, 200);
         }
+
         document.addEventListener('keydown', adjustVolume);
         document.querySelector('.image').addEventListener('click', adjustVolume);
+
 
 
         function playSpecificSong(index) {
@@ -2195,6 +2297,31 @@
             displaySongTitle(specificSong);
 
         }
+
+        function toggleDarkMode() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+
+            body.classList.toggle('dark-mode');
+            const isDarkMode = body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            themeIcon.src = isDarkMode ? 'sun.png' : 'moon.png';
+            themeIcon.alt = isDarkMode ? 'Light Mode' : 'Dark Mode';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+
+            if (isDarkMode) {
+                body.classList.add('dark-mode');
+                themeIcon.src = 'sun.png';
+                themeIcon.alt = 'Light Mode';
+            }
+        });
+
+
 
         function togglePlayPause() {
             const audioPlayer = document.getElementById('audioPlayer');
@@ -2403,18 +2530,27 @@
         function filterSongs(query, containerSelector, favoritesOnly = false) {
             const container = document.querySelector(containerSelector);
             const songs = container.querySelectorAll('.song-link');
-            const normalizedQuery = normalizeInput(query.toLowerCase());
-            const transliteratedQuery = transliterate(normalizedQuery);
+            const searchWords = normalizeInput(query.toLowerCase()).split(/\s+/);
+            const transliteratedSearchWords = transliterate(query.toLowerCase()).split(/\s+/);
 
             songs.forEach(song => {
-                const text = song.textContent;
-                const words = text.toLowerCase().split(/\s+/);
-                const transliteratedWords = transliterate(text.toLowerCase()).split(/\s+/);
+                const text = normalizeInput(song.textContent.toLowerCase());
+                const transliteratedText = transliterate(text);
 
-                if (words.some(word => word.startsWith(normalizedQuery)) ||
-                    transliteratedWords.some(word => word.startsWith(transliteratedQuery))) {
+                // Разбиваем текст песни на слова
+                const songWords = text.split(/\s+/);
+                const transliteratedSongWords = transliteratedText.split(/\s+/);
+
+                // Проверяем каждое поисковое слово
+                const allWordsMatch = searchWords.every(searchWord => {
+                    // Проверяем, есть ли хотя бы одно подходящее слово в песне
+                    return songWords.some(word => word.includes(searchWord)) ||
+                        transliteratedSongWords.some(word => word.includes(transliterate(searchWord)));
+                });
+
+                if (allWordsMatch) {
                     song.style.display = '';
-                    song.innerHTML = highlightMatch(text, query);
+                    song.innerHTML = highlightMatch(song.textContent, searchWords);
                 } else {
                     song.style.display = 'none';
                 }
@@ -2425,26 +2561,31 @@
             return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         }
 
-        function highlightMatch(text, searchTerm) {
-            if (!searchTerm) return text;
+        function highlightMatch(text, searchWords) {
+            if (!searchWords.length) return text;
 
-            const escapedSearchTerm = escapeRegExp(searchTerm.toLowerCase());
-            const transliteratedSearchTerm = transliterate(searchTerm.toLowerCase());
+            // Разбиваем текст на слова, сохраняя пробелы
+            const textParts = text.split(/(\s+)/);
 
-            const words = text.split(/\s+/);
-            return words.map(word => {
-                const lowerWord = word.toLowerCase();
-                const transliteratedWord = transliterate(lowerWord);
+            return textParts.map(part => {
+                if (part.trim() === '') return part; // Возвращаем пробелы как есть
 
-                if (lowerWord.startsWith(escapedSearchTerm) ||
-                    transliteratedWord.startsWith(transliteratedSearchTerm)) {
-                    return `<span class="highlight">${word}</span>`;
+                const lowerPart = part.toLowerCase();
+                const transliteratedPart = transliterate(lowerPart);
+
+                // Проверяем каждое поисковое слово
+                for (const searchWord of searchWords) {
+                    const transliteratedSearch = transliterate(searchWord.toLowerCase());
+
+                    if (lowerPart.includes(searchWord.toLowerCase()) ||
+                        transliteratedPart.includes(transliteratedSearch)) {
+                        return `<span class="highlight">${part}</span>`;
+                    }
                 }
-                return word;
-            }).join(' ');
+
+                return part;
+            }).join('');
         }
-
-
 
         function setupSearchFunctionality() {
             const searchAllInput = document.querySelector('.searchAll');
@@ -2458,16 +2599,48 @@
                 filterSongs(this.value, '#favoritesList .fullscreen-song-list-content', true);
             });
         }
+
+        const dimLayer = document.createElement('div');
+        dimLayer.style.position = 'fixed';
+        dimLayer.style.top = '0';
+        dimLayer.style.left = '0';
+        dimLayer.style.width = '100%';
+        dimLayer.style.height = '100%';
+        dimLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        dimLayer.style.zIndex = '9999';
+        dimLayer.style.pointerEvents = 'none';
+        document.body.appendChild(dimLayer);
+        let isDimmed = false;
+
+        function toggleDimLayer(event) {
+            if (event.key === 'd' || event.key === 'D') {
+                if (isDimmed) {
+                    document.body.removeChild(dimLayer);
+                } else {
+                    document.body.appendChild(dimLayer);
+                }
+                isDimmed = !isDimmed;
+            }
+        }
+        document.addEventListener('keydown', toggleDimLayer);
         document.addEventListener("keydown", (event) => {
+            const activeElement = document.activeElement;
+            const isInputField = activeElement.tagName === 'INPUT' ||
+                activeElement.tagName === 'TEXTAREA';
+            if (isInputField) {
+                return;
+            }
+
             if (event.key === " ") togglePlayPause();
             if (event.key === "ArrowRight") playRandomSong();
-            if (event.code === "KeyM") toggleMenu()
-            if (event.code === "KeyF") toggleFavorite()
-            if (event.code === "KeyA") showFullPlaylist()
-            if (event.code === "KeyL") showOnlyFavorites()
-            if (event.code === "KeyE") showOnlyEnglish()
-            if (event.code === "KeyR") showOnlyRussian()
-        })
+            if (event.code === "KeyM") toggleMenu();
+            if (event.code === "KeyF") toggleFavorite();
+            if (event.code === "KeyA") showFullPlaylist();
+            if (event.code === "KeyL") showOnlyFavorites();
+            if (event.code === "KeyE") showOnlyEnglish();
+            if (event.code === "KeyR") showOnlyRussian();
+            if (event.code === "KeyB") toggleDarkMode();
+        });
         document.addEventListener('DOMContentLoaded', setupSearchFunctionality);
     </script>
 </body>
