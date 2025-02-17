@@ -2612,23 +2612,22 @@
         document.body.appendChild(dimLayer);
         let isDimmed = false;
 
-        function toggleDimLayer(event) {
-            if (event.key === 'd' || event.key === 'D') {
-                if (isDimmed) {
-                    document.body.removeChild(dimLayer);
-                } else {
-                    document.body.appendChild(dimLayer);
-                }
-                isDimmed = !isDimmed;
+        function toggleDimLayer() {
+            if (isDimmed) {
+                document.body.removeChild(dimLayer);
+            } else {
+                document.body.appendChild(dimLayer);
             }
+            isDimmed = !isDimmed;
         }
-        document.addEventListener('keydown', toggleDimLayer);
+
         document.addEventListener("keydown", (event) => {
             const activeElement = document.activeElement;
             const isInputField = activeElement.tagName === 'INPUT' ||
                 activeElement.tagName === 'TEXTAREA';
+
             if (isInputField) {
-                return;
+                return; 
             }
 
             if (event.key === " ") togglePlayPause();
@@ -2640,9 +2639,11 @@
             if (event.code === "KeyE") showOnlyEnglish();
             if (event.code === "KeyR") showOnlyRussian();
             if (event.code === "KeyB") toggleDarkMode();
-            if(event.code === "KeyD") toggleDimLayer(event)
+            if (event.code === "KeyD") toggleDimLayer(); 
         });
+
         document.addEventListener('DOMContentLoaded', setupSearchFunctionality);
+
     </script>
 </body>
 
