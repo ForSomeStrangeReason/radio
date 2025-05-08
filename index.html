@@ -17,6 +17,7 @@
             background-color: rgb(2, 115, 143);
             overflow-y: auto;
             flex-direction: column;
+
         }
 
         .radioContainer {
@@ -27,17 +28,27 @@
             background-color: #fff1d2;
             border-radius: 10px;
             box-shadow: 0 4px 8px;
-            height: 430px;
+            height: 395px;
             position: relative;
+            display: flex;
+            flex-direction: column;
+        }
 
+        .textContainer {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10px;
         }
 
         .radioImage {
             width: 100%;
             border-radius: 8px;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
             cursor: pointer;
-            margin-top: 15px;
+            height: 250px;
+            object-fit: cover;
         }
 
         .radioName {
@@ -74,13 +85,17 @@
         }
 
         .songTitle {
-            margin-top: 15px;
             font-size: 18px;
             color: rgb(2, 115, 143);
             font-weight: bold;
             text-align: center;
             cursor: pointer;
             user-select: none;
+            /*margin-top: 10px;*/
+            /*align-items: center; */
+            /* margin-bottom: 10px;*/
+            margin: 0;
+
         }
 
         .song-item {
@@ -169,9 +184,11 @@
             cursor: pointer;
         }
 
+
+
         .pause {
             position: absolute;
-            top: 75%;
+            top: 70%;
             left: 50%;
             transform: translate(-50%, -50%);
             border-radius: 50%;
@@ -486,7 +503,9 @@
         <div class="star-container" onclick="toggleFavorite()">
             <img id="starIcon" src="notfullA.png" alt="Star" class="star-icon" width="20px" height="20px">
         </div>
-        <div id="songTitle" class="songTitle" onclick="toggleFullscreenSongList()"></div>
+        <div class="textContainer">
+            <div id="songTitle" class="songTitle" onclick="toggleFullscreenSongList()"></div>
+        </div>
         <div class="favorites-button" onclick="toggleFavoritesList()">
             <img src="menuicon.png" alt="menuicon" class="iconM">
         </div>
@@ -1799,7 +1818,6 @@
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part11/main/Андрей Губин - Лиза.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part11/main/Андрей Губин - Милая моя далеко .mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part11/main/Анжелика Варум - Художник, что рисует дождь .mp3",
-            "https://raw.githubusercontent.com/ForSomeStrangeReason/part11/main/Аргентина - Ямайка - 5#0.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part11/main/Ария - Потеряный Рай .mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part11/main/Артур Пирожков - Алкоголичка .mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part11/main/Асмолов Владимир - Кошечка .mp3",
@@ -2214,6 +2232,37 @@
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part16/main/Ундервуд - Гагарин.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part16/main/Ундервуд - Очень хочется в Советский Союз.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part16/main/Черный Обелиск - Я остаюсь.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/10cc%20-%20I'm%20Not%20In%20Love.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/3rd%20Force%20-%20Here%20Comes%20The%20Night.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/All%204%20One%20-%20I%20Swear.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Brotherhood%20of%20Man%20-%20Save%20Your%20Kisses%20for%20Me.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Dion%20-%20Runaround%20Sue.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Dion%20-%20The%20Wanderer.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Enigma%20-%20Back%20To%20The%20Rivers%20Of%20Belief%20Way%20To%20Eternity%20%20Hallelujah%20%20The%20Rivers%20Of%20Belief.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Eric%20Burdon%20-%20Woman%20Of%20The%20Rings.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Geordie%20-%20Little%20Boy.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Jules%20-%20You%20And%20Me.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/PLAZMA%20-%20Lonely.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Reflex - Мне трудно говорить.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Roxy%20Music%20-%20Love%20Is%20The%20Drug.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/SEREBRO - Дыши.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/The%20Alan%20Parsons%20Project%20-%20Don't%20Let%20It%20Show.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/The%20Alan%20Parsons%20Project%20-%20Lucifer.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/The%20Alan%20Parsons%20Project%20-%20Mammagamma.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/The%20Cure%20-%20Close%20To%20Me.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/The%20Foundations%20-%20Build%20me%20up%20buttercup.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/The%20Kinks%20-%20I'm%20Not%20Like%20Everybody%20Else.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/The%20Ronettes%20-%20Be%20my%20baby.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/The%20Temptations%20-%20My%20girl.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Аргентина - Ямайка - 5#0.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/ВИА Дикие Гитары - Сообщение Говоруна.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Гости из будущего - Беги от меня.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Девятый Район - Непрошеный гость.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Катя Лель - Долетай.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Линда - Мало Огня.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Линда - Никогда.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Михей и Джуманджи feat. Инна Steel - Туда.mp3",
+            "https://raw.githubusercontent.com/ForSomeStrangeReason/part17/main/Пропаганда - Мари полюбила кхуана.mp3",
         ];
 
         let originalMusicLinks = [...musicLinks];
@@ -2247,6 +2296,7 @@
         function playRandomSong() {
             if (!isRadioClicked) {
                 document.querySelector('.pause').style.animation = 'none';
+                document.querySelector('.radioContainer').style.height = '500px';
                 isRadioClicked = true;
             }
 
@@ -2700,26 +2750,30 @@
             });
         }
 
-        const dimLayer = document.createElement('div');
-        dimLayer.style.position = 'fixed';
-        dimLayer.style.top = '0';
-        dimLayer.style.left = '0';
-        dimLayer.style.width = '100%';
-        dimLayer.style.height = '100%';
-        dimLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-        dimLayer.style.zIndex = '9999';
-        dimLayer.style.pointerEvents = 'none';
-        document.body.appendChild(dimLayer);
+        let dimLayer = null;
         let isDimmed = false;
 
         function toggleDimLayer() {
             if (isDimmed) {
-                document.body.removeChild(dimLayer);
+                if (dimLayer) {
+                    document.body.removeChild(dimLayer);
+                    dimLayer = null;
+                }
             } else {
+                dimLayer = document.createElement('div');
+                dimLayer.style.position = 'fixed';
+                dimLayer.style.top = '0';
+                dimLayer.style.left = '0';
+                dimLayer.style.width = '100%';
+                dimLayer.style.height = '100%';
+                dimLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                dimLayer.style.zIndex = '9999';
+                dimLayer.style.pointerEvents = 'none';
                 document.body.appendChild(dimLayer);
             }
             isDimmed = !isDimmed;
         }
+
 
         document.addEventListener("keydown", (event) => {
             const activeElement = document.activeElement;
