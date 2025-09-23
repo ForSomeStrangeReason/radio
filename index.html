@@ -874,7 +874,6 @@
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part3/main/Eurythmics%2C%20Annie%20Lennox%2C%20Dave%20Stewart%20-%20There%20Must%20Be%20an%20Angel%20(Playing%20with%20My%20Heart).mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part3/main/Eurythmics.%20Annie%20Lennox%2C%20Dave%20Stewart%20-%20I%20saved%20the%20world%20today.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part3/main/Everlast%20-%20What%20It's%20Like%20Explicit.mp3",
-            "https://raw.githubusercontent.com/ForSomeStrangeReason/part3/main/desktop.ini",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part4/main/Everything%20but%20the%20girl%20-%20Missing%20.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part4/main/Exile%20-%20Kiss%20you%20all%20over.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part4/main/Extreme%20-%20More%20than%20words.mp3",
@@ -1617,7 +1616,6 @@
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part9/main/Tasmin%20Archer%20-%20Sleeping%20Satellite.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part9/main/Taylor%20Dayne%20-%20Tell%20it%20to%20My%20Heart.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part9/main/taISH%20-%20LOVU.mp3",
-            "https://raw.githubusercontent.com/ForSomeStrangeReason/part10/main/TERRY - Зодиак.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part10/main/TURBOMODA - Позови .mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part10/main/TWICE%20-%20What%20is%20Love%23.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part10/main/Tears%20For%20Fears%20-%20Everybody%20Wants%20To%20Rule%20The%20World.mp3",
@@ -1695,7 +1693,6 @@
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part10/main/The%20Rolling%20Stones%20-%20Anybody%20Seen%20My%20Baby%23%20-%20Remastered%202009.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part10/main/The%20Rolling%20Stones%20-%20Gimme%20Shelter%20.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part10/main/The%20Romantics%20-%20Talking%20In%20Your%20Sleep%20(2023%20Remaster).mp3",
-            "https://raw.githubusercontent.com/ForSomeStrangeReason/part10/main/The%20Sadies%20-%20Stop%20and%20Start.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part10/main/The%20Statler%20Brothers%20-%20Flowers%20on%20the%20wall.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part10/main/The%20Stranglers%20-%20Always%20The%20Sun%20-%20Sunny%20Side%20Up%20Mix.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part10/main/The%20Twins%20-%20Ballet%20Dancer.mp3",
@@ -1929,7 +1926,6 @@
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part12/main/Виктор Цой (Кино) - Я объявляю свой дом .mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part12/main/Виктор Цой (Кино) -Закрой за мной дверь, я ухожу.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part12/main/Виктор Цой (Кино)- В Наших Глазах .mp3",
-            "https://raw.githubusercontent.com/ForSomeStrangeReason/part12/main/Виктор Цой и Рыбин - Железнодорожная вода.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part12/main/Вихрия - 9 этаж.mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part12/main/Влад Сташевский - Позови меня в ночи .mp3",
             "https://raw.githubusercontent.com/ForSomeStrangeReason/part12/main/Владимир Высоцкий - Баллада о книжных детях .mp3",
@@ -2846,4 +2842,37 @@
     </script>
 </body>
 
+</html>
+
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do List</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .done { text-decoration: line-through; color: gray; }
+  </style>
+</head>
+<body>
+  <h1>To-Do List</h1>
+  <input id="taskInput" type="text" placeholder="Новая задача">
+  <button id="addBtn">Добавить</button>
+  <ul id="taskList"></ul>
+
+  <script>
+    const input = document.getElementById('taskInput');
+    const btn = document.getElementById('addBtn');
+    const list = document.getElementById('taskList');
+
+    btn.addEventListener('click', () => {
+      if (input.value.trim() === '') return;
+      const li = document.createElement('li');
+      li.textContent = input.value;
+      list.appendChild(li);
+      input.value = '';
+    });
+  </script>
+</body>
 </html>
